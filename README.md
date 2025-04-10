@@ -1,6 +1,22 @@
 # js-natural-sort
 
+![GitHub package.json version](https://img.shields.io/github/package-json/v/andreasnicolaou/js-natural-sort)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/andreasnicolaou/js-natural-sort/build.yaml)
+![GitHub License](https://img.shields.io/github/license/andreasnicolaou/js-natural-sort)
+
+![NPM Downloads](https://img.shields.io/npm/dm/%40andreasnicolaou%2Fjs-natural-sort)
+
 `js-natural-sort` is a JavaScript package that provides a natural sorting function for strings and numbers, handling various types of data such as dates, IPs, hexadecimal numbers, and regular strings. It offers a more intuitive sorting order compared to default lexicographical sorting.
+
+## Features
+
+- Natural sorting (e.g. '10' < '100')
+- Date-aware comparisons
+- IP address sorting
+- Hexadecimal value support
+- Case-insensitive mode
+- Handles leading zeroes correctly
+- ESM, CommonJS, and AMD build support
 
 ## Installation
 
