@@ -1,6 +1,6 @@
 {
-  "name": "js-natural-sort",
-  "version": "1.0.2",
+  "name": "@andreasnicolaou/js-natural-sort",
+  "version": "1.0.3",
   "description": "Natural sorting of strings and numbers, supporting date, IP, and hex value comparison, with configurable case sensitivity and sorting order.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
