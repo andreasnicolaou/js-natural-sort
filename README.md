@@ -23,7 +23,7 @@
 You can install the package via npm:
 
 ```bash
-npm install js-natural-sort
+npm install @andreasnicolaou/js-natural-sort
 ```
 
 ## Usage
