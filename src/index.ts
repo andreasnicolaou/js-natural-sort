@@ -108,20 +108,26 @@ class JsNaturalSort {
     return str.replace(/\s+/g, ' ').trim();
   }
 }
+
+export type NaturalSortOptions = {
+  insensitive?: boolean;
+  order?: 'asc' | 'desc';
+};
+
 /**
  * Creates a sorting function based on the given parameters.
- * @param insensitive - A flag to indicate whether the sorting should be case-insensitive. Default is false.
- * @param order - The desired order for sorting, either 'asc' for ascending or 'desc' for descending. Default is 'asc'.
+ * @param options - Configuration options for the sorting behavior.
+ * @param options.insensitive - A flag to indicate whether the sorting should be case-insensitive. Default is false.
+ * @param options.order - The desired order for sorting, either 'asc' for ascending or 'desc' for descending. Default is 'asc'.
  * @returns A comparison function that can be used with sorting functions like `Array.prototype.sort`.
  * @author Andreas Nicolaou
  */
-export function naturalSort(
-  insensitive: boolean = false,
-  order: 'asc' | 'desc' = 'asc'
-): (a: string | number, b: string | number) => number {
+export const naturalSort = (
+  { insensitive = false, order = 'asc' }: NaturalSortOptions = Object.create(Object.prototype)
+): ((a: string | number, b: string | number) => number) => {
   const sorter = new JsNaturalSort(insensitive);
   return (a: string | number, b: string | number) => {
     const result = sorter.compare(a, b);
     return order === 'desc' ? -result : result;
   };
-}
+};

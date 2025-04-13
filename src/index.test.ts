@@ -76,7 +76,7 @@ describe('Natural Sort Tests', () => {
   });
 
   test('Case-insensitive sorting', () => {
-    const sortInsensitive = naturalSort(true);
+    const sortInsensitive = naturalSort({ insensitive: true });
     expect(['a', 'B'].sort(sortInsensitive)).toEqual(['a', 'B']);
   });
 
@@ -155,11 +155,16 @@ describe('Natural Sort Tests', () => {
   });
 
   test('Mixed Case Alphanumeric Strings', () => {
-    expect(['A2', 'a1', 'B1', 'b2'].sort(naturalSort(true))).toEqual(['a1', 'A2', 'B1', 'b2']);
+    expect(['A2', 'a1', 'B1', 'b2'].sort(naturalSort({ insensitive: true }))).toEqual(['a1', 'A2', 'B1', 'b2']);
   });
 
   test('Mixed Case Alphanumeric Strings Descenting', () => {
-    expect(['A2', 'a1', 'B1', 'b2'].sort(naturalSort(true, 'desc'))).toEqual(['b2', 'B1', 'A2', 'a1']);
+    expect(['A2', 'a1', 'B1', 'b2'].sort(naturalSort({ insensitive: true, order: 'desc' }))).toEqual([
+      'b2',
+      'B1',
+      'A2',
+      'a1',
+    ]);
   });
 
   test('Sorting a List with Special Characters', () => {
@@ -172,7 +177,7 @@ describe('Natural Sort Tests', () => {
   });
 
   test('Sorting a List with Special Characters Descenting', () => {
-    expect(['hello!', 'hello#', 'hello$', 'hello@'].sort(naturalSort(false, 'desc'))).toEqual([
+    expect(['hello!', 'hello#', 'hello$', 'hello@'].sort(naturalSort({ order: 'desc' }))).toEqual([
       'hello@',
       'hello$',
       'hello#',
@@ -206,7 +211,7 @@ describe('Natural Sort Tests', () => {
   });
 
   test('Sorting with multiple spaces between numbers Descenting', () => {
-    expect(['file    10.txt', 'file 2.txt', 'file 1.txt', 'file 11.txt'].sort(naturalSort(false, 'desc'))).toEqual([
+    expect(['file    10.txt', 'file 2.txt', 'file 1.txt', 'file 11.txt'].sort(naturalSort({ order: 'desc' }))).toEqual([
       'file 11.txt',
       'file    10.txt',
       'file 2.txt',
