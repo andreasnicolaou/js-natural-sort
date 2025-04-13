@@ -31,11 +31,21 @@ npm install js-natural-sort
 ```typescript
 import { naturalSort } from 'js-natural-sort';
 
-const arr = ['10.0401', 10.022, 10.042, '10.021999'].sort(naturalSort());
-console.log(arr); // ['10.021999', 10.022, '10.0401', 10.042]
+const arrFloats = ['10.0401', 10.022, 10.042, '10.021999'].sort(naturalSort());
+console.log(arrFloats); // ['10.021999', 10.022, '10.0401', 10.042]
+```
+
+
+```typescript
+import { naturalSort } from 'js-natural-sort';
+
+const arrDates = ['2022-01-02', '2021-12-31', '2020-11-11', '2021-01-01'].sort(naturalSort());
+console.log(arrDates); // ['2020-11-11', '2021-01-01', '2021-12-31', '2022-01-02']
 ```
 
 ## Parameters
+
+The function accepts a single optional `options` object with the following properties:
 
 | Parameter     | Type                | Description                                     | Default |
 | ------------- | ------------------- | ----------------------------------------------- | ------- |
