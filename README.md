@@ -35,7 +35,6 @@ const arrFloats = ['10.0401', 10.022, 10.042, '10.021999'].sort(naturalSort());
 console.log(arrFloats); // ['10.021999', 10.022, '10.0401', 10.042]
 ```
 
-
 ```typescript
 import { naturalSort } from 'js-natural-sort';
 
