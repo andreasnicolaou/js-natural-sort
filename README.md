@@ -29,14 +29,14 @@ npm install js-natural-sort
 ## Usage
 
 ```typescript
-import { naturalSort } from 'js-natural-sort';
+import { naturalSort } from '@andreasnicolaou/js-natural-sort';
 
 const arrFloats = ['10.0401', 10.022, 10.042, '10.021999'].sort(naturalSort());
 console.log(arrFloats); // ['10.021999', 10.022, '10.0401', 10.042]
 ```
 
 ```typescript
-import { naturalSort } from 'js-natural-sort';
+import { naturalSort } from '@andreasnicolaou/js-natural-sort';
 
 const arrDates = ['2022-01-02', '2021-12-31', '2020-11-11', '2021-01-01'].sort(naturalSort());
 console.log(arrDates); // ['2020-11-11', '2021-01-01', '2021-12-31', '2022-01-02']
