@@ -16,6 +16,7 @@
 - Hexadecimal value support
 - Case-insensitive mode
 - Handles leading zeroes correctly
+- Object support via key or accessor
 - ESM, CommonJS, and AMD build support
 
 ## Installation
@@ -42,14 +43,33 @@ const arrDates = ['2022-01-02', '2021-12-31', '2020-11-11', '2021-01-01'].sort(n
 console.log(arrDates); // ['2020-11-11', '2021-01-01', '2021-12-31', '2022-01-02']
 ```
 
+```typescript
+import { naturalSort } from '@andreasnicolaou/js-natural-sort';
+
+const arrObj = [
+  { name: 'John', age: 30 },
+  { name: 'Alice', age: 25 },
+  { name: 'Bob', age: 35 },
+].sort(naturalSort({ key: (x) => `${x.name}${x.age}` }));
+console.log(arrObj); // [{ name: 'Alice', age: 25 }, { name: 'Bob', age: 35 }, { name: 'John', age: 30 }]
+```
+
+```typescript
+import { naturalSort } from '@andreasnicolaou/js-natural-sort';
+
+const arrObj2 = [{ id: 10 }, { id: 2 }, { id: 1 }].sort(naturalSort({ key: 'id', order: 'desc' }));
+console.log(arrObj2); // [{ id: 10 }, { id: 2 }, { id: 1 }]
+```
+
 ## Parameters
 
 The function accepts a single optional `options` object with the following properties:
 
-| Parameter     | Type                | Description                                     | Default |
-| ------------- | ------------------- | ----------------------------------------------- | ------- |
-| `insensitive` | `boolean`           | Whether the sorting should be case-insensitive. | `false` |
-| `order`       | `'asc'` \| `'desc'` | Sorting order. Can be `'asc'` or `'desc'`.      | `'asc'` |
+| Parameter     | Type                                 | Description                                                   | Default       |
+| ------------- | ------------------------------------ | ------------------------------------------------------------- | ------------- |
+| `insensitive` | `boolean`                            | Whether the sorting should be case-insensitive.               | `false`       |
+| `order`       | `'asc'` \| `'desc'`                  | Sorting order. Can be `'asc'` or `'desc'`.                    | `'asc'`       |
+| `key`         | `'keyof T'` \| `'(obj: T) => value'` | Key or accessor function to extract sortable value from item. | `'undefined'` |
 
 ## Contributing
 

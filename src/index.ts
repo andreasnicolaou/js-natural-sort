@@ -1,3 +1,4 @@
+export type NaturalSortableValue = string | number | undefined | null | Date | boolean | bigint;
 class JsNaturalSort {
   private static readonly DATE_REGEX =
     /(^([\w ]+,?[\w ]+)?[\w ]+,?[\w ]+\d+:\d+(:\d+)?[\w ]?|^\d{1,4}[/-]\d{1,4}[-/]\d{1,4}|^\w+, \w+ \d+, \d{4})/;
@@ -7,13 +8,13 @@ class JsNaturalSort {
   private static readonly NUMBER_REGEX = /(^([+-]?(?:0|[1-9]\d*)(?:\.\d*)?(?:[eE][+-]?\d+)?)?$|^0x[0-9a-f]+$|\d+)/gi;
   private static readonly SPACE_REGEX = /(^[ ]*|[ ]*$)/g;
 
-  private insensitive: boolean;
+  private readonly insensitive: boolean;
 
   constructor(insensitive: boolean = false) {
     this.insensitive = insensitive;
   }
 
-  public compare(a: string | number, b: string | number): number {
+  public compare(a: NaturalSortableValue, b: NaturalSortableValue): number {
     const x = this.normalize(a).replace(JsNaturalSort.SPACE_REGEX, '') || '';
     const y = this.normalize(b).replace(JsNaturalSort.SPACE_REGEX, '') || '';
 
@@ -99,7 +100,10 @@ class JsNaturalSort {
     return 0;
   }
 
-  private normalize(value: string | number): string {
+  private normalize(value: NaturalSortableValue): string {
+    if (value === null || value === undefined) {
+      return '';
+    }
     const str = value.toString();
     return this.insensitive ? str.toLowerCase() : str;
   }
@@ -109,9 +113,10 @@ class JsNaturalSort {
   }
 }
 
-export type NaturalSortOptions = {
+export type NaturalSortOptions<T = unknown> = {
   insensitive?: boolean;
   order?: 'asc' | 'desc';
+  key?: keyof T | ((obj: T) => NaturalSortableValue);
 };
 
 /**
@@ -119,15 +124,26 @@ export type NaturalSortOptions = {
  * @param options - Configuration options for the sorting behavior.
  * @param options.insensitive - A flag to indicate whether the sorting should be case-insensitive. Default is false.
  * @param options.order - The desired order for sorting, either 'asc' for ascending or 'desc' for descending. Default is 'asc'.
+ * @param options.key - The property key or accessor function to use when sorting objects.
  * @returns A comparison function that can be used with sorting functions like `Array.prototype.sort`.
  * @author Andreas Nicolaou
  */
-export const naturalSort = (
-  { insensitive = false, order = 'asc' }: NaturalSortOptions = Object.create(Object.prototype)
-): ((a: string | number, b: string | number) => number) => {
+export const naturalSort = <T = unknown>({ insensitive = false, order = 'asc', key }: NaturalSortOptions<T> = {}): ((
+  a: T,
+  b: T
+) => number) => {
   const sorter = new JsNaturalSort(insensitive);
-  return (a: string | number, b: string | number) => {
-    const result = sorter.compare(a, b);
+
+  return (a: T, b: T) => {
+    let aValue: NaturalSortableValue = a as keyof T as unknown as NaturalSortableValue;
+    let bValue: NaturalSortableValue = b as keyof T as unknown as NaturalSortableValue;
+
+    if (key !== undefined) {
+      aValue = typeof key === 'function' ? key(a) : (a[key as keyof T] as unknown as NaturalSortableValue);
+      bValue = typeof key === 'function' ? key(b) : (b[key as keyof T] as unknown as NaturalSortableValue);
+    }
+
+    const result = sorter.compare(aValue, bValue);
     return order === 'desc' ? -result : result;
   };
 };

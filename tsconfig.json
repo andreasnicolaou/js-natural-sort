@@ -9,6 +9,7 @@
     "outDir": "./dist",
     "esModuleInterop": true,
     "moduleResolution": "node",
+    "importHelpers": true,
     "types": ["jest"],
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,

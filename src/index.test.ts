@@ -226,4 +226,86 @@ describe('Natural Sort Tests', () => {
       )
     ).toEqual(['/home/user/file_2020-11-11.txt', '/home/user/file_2021-12-31.txt', '/home/user/file_2022-01-01.txt']);
   });
+
+  test('Sorting objects by string property', () => {
+    expect([{ name: 'File 10' }, { name: 'File 2' }, { name: 'File 1' }].sort(naturalSort({ key: 'name' }))).toEqual([
+      { name: 'File 1' },
+      { name: 'File 2' },
+      { name: 'File 10' },
+    ]);
+  });
+
+  test('Sorting objects by numeric property', () => {
+    expect([{ id: 10 }, { id: 2 }, { id: 1 }].sort(naturalSort({ key: 'id' }))).toEqual([
+      { id: 1 },
+      { id: 2 },
+      { id: 10 },
+    ]);
+  });
+
+  test('Sorting objects by nested property', () => {
+    expect(
+      [{ data: { value: '10.5' } }, { data: { value: '2.3' } }, { data: { value: '1.7' } }].sort(
+        naturalSort({ key: (x) => x.data.value })
+      )
+    ).toEqual([{ data: { value: '1.7' } }, { data: { value: '2.3' } }, { data: { value: '10.5' } }]);
+  });
+
+  test('Sorting objects with mixed value types', () => {
+    expect([{ val: '10' }, { val: 2 }, { val: '1' }].sort(naturalSort({ key: 'val' }))).toEqual([
+      { val: '1' },
+      { val: 2 },
+      { val: '10' },
+    ]);
+  });
+
+  test('Sorting objects with case-sensitive property', () => {
+    expect([{ code: 'a10' }, { code: 'A2' }, { code: 'a1' }].sort(naturalSort({ key: 'code' }))).toEqual([
+      { code: 'A2' },
+      { code: 'a1' },
+      { code: 'a10' },
+    ]);
+  });
+
+  test('Sorting objects with case-insensitive property', () => {
+    expect(
+      [{ code: 'a10' }, { code: 'A2' }, { code: 'a1' }].sort(naturalSort({ key: 'code', insensitive: true }))
+    ).toEqual([{ code: 'a1' }, { code: 'A2' }, { code: 'a10' }]);
+  });
+
+  test('Sorting objects with missing key property', () => {
+    expect([{ id: 10 }, { name: 'Item 2' }, { id: 1 }].sort(naturalSort({ key: 'id' }))).toEqual([
+      { id: 1 },
+      { id: 10 },
+      { name: 'Item 2' },
+    ]);
+  });
+
+  test('Sorting objects with null/undefined values', () => {
+    expect(
+      [{ val: 10 }, { val: null }, { val: 2 }, { val: undefined }].sort(naturalSort({ key: 'val', order: 'asc' }))
+    ).toEqual([{ val: 2 }, { val: 10 }, { val: null }, { val: undefined }]);
+  });
+
+  test('Sorting objects in descending order', () => {
+    expect([{ id: 10 }, { id: 2 }, { id: 1 }].sort(naturalSort({ key: 'id', order: 'desc' }))).toEqual([
+      { id: 10 },
+      { id: 2 },
+      { id: 1 },
+    ]);
+  });
+
+  test('Sorting objects with function key selector', () => {
+    expect(
+      [
+        { name: 'John', age: 30 },
+        { name: 'Alice', age: 25 },
+        { name: 'Bob', age: 35 },
+      ].sort(naturalSort({ key: (x) => `${x.name}${x.age}` }))
+    ).toEqual([
+      { name: 'Alice', age: 25 },
+      { name: 'Bob', age: 35 },
+      { name: 'John', age: 30 },
+    ]);
+  });
 });
