@@ -17,7 +17,23 @@
 - Case-insensitive mode
 - Handles leading zeroes correctly
 - Object support via key or accessor
-- ESM, CommonJS, and AMD build support
+- ESM, CommonJS, AMD, UMD (browser), and minified UMD build support
+- TypeScript type definitions included
+
+## Browser Usage
+
+You can use the UMD build directly in the browser:
+
+```html
+<script src="dist/index.umd.js"></script>
+<script>
+  // global variable: naturalSort
+  const arr = ['10', '2', '1'].sort(naturalSort());
+  console.log(arr); // ["1", "2", "10"]
+</script>
+```
+
+For production, use the minified build (`dist/index.umd.min.js`).
 
 ## Installation
 
@@ -27,7 +43,7 @@ You can install the package via npm:
 npm install @andreasnicolaou/js-natural-sort
 ```
 
-## Usage
+## Usage (Node.js / Bundlers)
 
 ```typescript
 import { naturalSort } from '@andreasnicolaou/js-natural-sort';
@@ -60,6 +76,10 @@ import { naturalSort } from '@andreasnicolaou/js-natural-sort';
 const arrObj2 = [{ id: 10 }, { id: 2 }, { id: 1 }].sort(naturalSort({ key: 'id', order: 'desc' }));
 console.log(arrObj2); // [{ id: 10 }, { id: 2 }, { id: 1 }]
 ```
+
+## TypeScript
+
+Type definitions are included. You can use this package with full TypeScript support out of the box.
 
 ## Parameters
 
