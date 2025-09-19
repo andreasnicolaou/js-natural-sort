@@ -8,7 +8,7 @@
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/andreasnicolaou/js-natural-sort/build.yaml)
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/andreasnicolaou/js-natural-sort)
 [![Known Vulnerabilities](https://snyk.io/test/github/andreasnicolaou/js-natural-sort/badge.svg)](https://snyk.io/test/github/andreasnicolaou/js-natural-sort)
-![Bundle Size](https://deno.bundlejs.com/badge?q=@andreasnicolaou/js-natural-sort@1.3.0&treeshake=[*])
+![Bundle Size](https://deno.bundlejs.com/badge?q=@andreasnicolaou/js-natural-sort&treeshake=[*])
 
 ![ESLint](https://img.shields.io/badge/linter-eslint-4B32C3.svg?logo=eslint)
 ![Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?logo=prettier)
