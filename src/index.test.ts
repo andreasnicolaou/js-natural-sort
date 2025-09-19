@@ -14,6 +14,15 @@ describe('Natural Sort Tests', () => {
     ]);
   });
 
+  test('IP address equality (line 29)', () => {
+    expect(['192.168.1.1', '192.168.1.1'].sort(naturalSort())).toEqual(['192.168.1.1', '192.168.1.1']);
+  });
+
+  test('Hexadecimal string comparison', () => {
+    expect(['0x20', '0x10'].sort(naturalSort())).toEqual(['0x10', '0x20']);
+    expect(['0x10', '0x20'].sort(naturalSort())).toEqual(['0x10', '0x20']);
+  });
+
   test('Float & Decimal Notation', () => {
     expect(['10.04f', '10.039F', '10.038d', '10.037D'].sort(naturalSort())).toEqual([
       '10.037D',
