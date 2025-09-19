@@ -1,12 +1,22 @@
 # js-natural-sort
 
-![GitHub package.json version](https://img.shields.io/github/package-json/v/andreasnicolaou/js-natural-sort)
-![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/andreasnicolaou/js-natural-sort/build.yaml)
+`js-natural-sort` is a JavaScript package that provides a natural sorting function for strings and numbers, handling various types of data such as dates, IPs, hexadecimal numbers, and regular strings. It offers a more intuitive sorting order compared to default lexicographical sorting.
+
+![TypeScript](https://img.shields.io/badge/TS-TypeScript-3178c6?logo=typescript&logoColor=white)
+![GitHub contributors](https://img.shields.io/github/contributors/andreasnicolaou/js-natural-sort)
 ![GitHub License](https://img.shields.io/github/license/andreasnicolaou/js-natural-sort)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/andreasnicolaou/js-natural-sort/build.yaml)
+![GitHub package.json version](https://img.shields.io/github/package-json/v/andreasnicolaou/js-natural-sort)
+[![Known Vulnerabilities](https://snyk.io/test/github/andreasnicolaou/js-natural-sort/badge.svg)](https://snyk.io/test/github/andreasnicolaou/js-natural-sort)
+![Bundle Size](https://deno.bundlejs.com/badge?q=@andreasnicolaou/js-natural-sort@1.3.0&treeshake=[*])
+
+![ESLint](https://img.shields.io/badge/linter-eslint-4B32C3.svg?logo=eslint)
+![Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?logo=prettier)
+![Jest](https://img.shields.io/badge/tested_with-jest-99424f.svg?logo=jest)
+![Maintenance](https://img.shields.io/maintenance/yes/2025)
+[![codecov](https://codecov.io/gh/andreasnicolaou/js-natural-sort/graph/badge.svg?token=ELH4YWG68O)](https://codecov.io/gh/andreasnicolaou/js-natural-sort)
 
 ![NPM Downloads](https://img.shields.io/npm/dm/%40andreasnicolaou%2Fjs-natural-sort)
-
-`js-natural-sort` is a JavaScript package that provides a natural sorting function for strings and numbers, handling various types of data such as dates, IPs, hexadecimal numbers, and regular strings. It offers a more intuitive sorting order compared to default lexicographical sorting.
 
 ## Features
 
@@ -20,27 +30,89 @@
 - ESM, CommonJS, AMD, UMD (browser), and minified UMD build support
 - TypeScript type definitions included
 
-## Browser Usage
-
-You can use the UMD build directly in the browser:
-
-```html
-<script src="dist/index.umd.js"></script>
-<script>
-  // global variable: naturalSort
-  const arr = ['10', '2', '1'].sort(naturalSort());
-  console.log(arr); // ["1", "2", "10"]
-</script>
-```
-
-For production, use the minified build (`dist/index.umd.min.js`).
-
 ## Installation
 
 You can install the package via npm:
 
 ```bash
 npm install @andreasnicolaou/js-natural-sort
+```
+
+```bash
+yarn add @andreasnicolaou/js-natural-sort
+```
+
+```bash
+pnpm add @andreasnicolaou/js-natural-sort
+```
+
+### CDN Usage
+
+For direct browser usage without a build step:
+
+```html
+<!-- unpkg CDN (latest version, unminified) -->
+<script src="https://unpkg.com/@andreasnicolaou/js-natural-sort/dist/index.umd.js"></script>
+
+<!-- unpkg CDN (latest version, minified) -->
+<script src="https://unpkg.com/@andreasnicolaou/js-natural-sort/dist/index.umd.min.js"></script>
+
+<!-- jsDelivr CDN (unminified) -->
+<script src="https://cdn.jsdelivr.net/npm/@andreasnicolaou/js-natural-sort/dist/index.umd.js"></script>
+
+<!-- jsDelivr CDN (minified) -->
+<script src="https://cdn.jsdelivr.net/npm/@andreasnicolaou/js-natural-sort/dist/index.umd.min.js"></script>
+```
+
+#### ES Modules (Recommended)
+
+```js
+import { naturalSort } from '@andreasnicolaou/js-natural-sort';
+
+const arr = ['10', '2', '1'].sort(naturalSort());
+console.log(arr); // ['1', '2', '10']
+```
+
+#### CommonJS
+
+```js
+const { naturalSort } = require('@andreasnicolaou/js-natural-sort');
+
+const arr = ['10', '2', '1'].sort(naturalSort());
+console.log(arr); // ['1', '2', '10']
+```
+
+#### Browser (UMD via CDN)
+
+```html
+<script src="https://unpkg.com/@andreasnicolaou/js-natural-sort/dist/index.umd.min.js"></script>
+<script>
+  // global: naturalSort
+  const arr = ['10', '2', '1'].sort(naturalSort());
+  console.log(arr); // ['1', '2', '10']
+</script>
+```
+
+> **Note:** When using the UMD build in the browser, the global variable is named `naturalSort`.
+
+#### Browser (ES Modules via CDN)
+
+```html
+<script type="module">
+  import { naturalSort } from 'https://cdn.jsdelivr.net/npm/@andreasnicolaou/js-natural-sort/dist/index.js';
+  const arr = ['10', '2', '1'].sort(naturalSort());
+  console.log(arr); // ['1', '2', '10']
+</script>
+```
+
+#### TypeScript
+
+Type definitions are included out of the box:
+
+```ts
+import { naturalSort } from '@andreasnicolaou/js-natural-sort';
+
+const arr: string[] = ['10', '2', '1'].sort(naturalSort());
 ```
 
 ## Usage (Node.js / Bundlers)
@@ -76,6 +148,12 @@ import { naturalSort } from '@andreasnicolaou/js-natural-sort';
 const arrObj2 = [{ id: 10 }, { id: 2 }, { id: 1 }].sort(naturalSort({ key: 'id', order: 'desc' }));
 console.log(arrObj2); // [{ id: 10 }, { id: 2 }, { id: 1 }]
 ```
+
+#### Legacy Builds
+
+Legacy outputs (`dist/index.esm.js`, `dist/index.cjs.js`, `dist/index.amd.js`) are still published for compatibility, but it is recommended to use the new outputs (`dist/index.js`, `dist/index.cjs`, UMD, and type definitions) for all new projects.
+
+> **Note:** The legacy AMD build (`dist/index.amd.js`) exposes the global variable as `natural-sort` (with a dash), not `naturalSort`. This is for backward compatibility.
 
 ## TypeScript
 
