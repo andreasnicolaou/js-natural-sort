@@ -21,9 +21,9 @@
 ## Features
 
 - Natural sorting (e.g. '10' < '100')
-- Date-aware comparisons
-- IP address sorting
-- Hexadecimal value support
+- Date-aware comparisons, for both date strings and `Date` objects
+- IP address sorting (IPv4, and IPv6 in full uncompressed form)
+- Hexadecimal value support, exact beyond `Number.MAX_SAFE_INTEGER`
 - Case-insensitive mode
 - Handles leading zeroes correctly
 - Object support via key or accessor
@@ -163,11 +163,23 @@ Type definitions are included. You can use this package with full TypeScript sup
 
 The function accepts a single optional `options` object with the following properties:
 
-| Parameter     | Type                                 | Description                                                   | Default       |
-| ------------- | ------------------------------------ | ------------------------------------------------------------- | ------------- |
-| `insensitive` | `boolean`                            | Whether the sorting should be case-insensitive.               | `false`       |
-| `order`       | `'asc'` \| `'desc'`                  | Sorting order. Can be `'asc'` or `'desc'`.                    | `'asc'`       |
-| `key`         | `'keyof T'` \| `'(obj: T) => value'` | Key or accessor function to extract sortable value from item. | `'undefined'` |
+| Parameter     | Type                                            | Description                                                   | Default     |
+| ------------- | ----------------------------------------------- | ------------------------------------------------------------- | ----------- |
+| `insensitive` | `boolean`                                       | Whether the sorting should be case-insensitive.               | `false`     |
+| `order`       | `'asc' \| 'desc'`                               | Sorting order. Can be `'asc'` or `'desc'`.                    | `'asc'`     |
+| `key`         | `keyof T \| ((obj: T) => NaturalSortableValue)` | Key or accessor function to extract sortable value from item. | `undefined` |
+
+## Sorting rules
+
+Values are compared by splitting them into alternating text and number chunks, then comparing chunk by chunk:
+
+- Within a chunk, numbers sort before text (`'2'` before `'apple'`)
+- Text is compared by character code, so uppercase precedes lowercase unless `insensitive` is set
+- A number with a leading zero keeps its padding and compares as text, so `file1` sorts before `file001`.
+  A value that is entirely one number is always numeric, so `'0'`, `'007'` and `'0.5'` compare by value
+- Two IP addresses of the same family compare part by part; an IPv4 and an IPv6 address fall back to
+  natural ordering
+- `null` and `undefined` compare as empty strings, which places them last in ascending order
 
 ## Contributing
 
