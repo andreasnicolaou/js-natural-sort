@@ -1,7 +1,7 @@
 {
   "name": "@andreasnicolaou/js-natural-sort",
   "version": "2.0.0",
-  "description": "Natural sorting of strings and numbers, supporting date, IP, and hex value comparison, with configurable case sensitivity and sorting order.",
+  "description": "Natural sort comparator for JavaScript and TypeScript: numbers, dates, IP addresses and hex values, with case-insensitive, descending and key-based sorting.",
   "main": "dist/index.cjs",
   "module": "dist/index.js",
   "exports": {
@@ -126,24 +126,24 @@
     "rollup-plugin-dts": "^6.5.1",
     "ts-jest": "^29.4.12",
     "ts-node": "^10.9.2",
+    "tslib": "^2.8.1",
     "typescript": "^5.9.3"
   },
   "keywords": [
-    "natural",
+    "natural-sort",
+    "natural-sorting",
     "sort",
-    "javascript",
-    "array",
-    "frontend",
     "sorter",
+    "sorting",
+    "comparator",
+    "alphanumeric",
+    "javascript",
+    "typescript",
+    "array",
     "numeric",
-    "unicode",
-    "algorithm",
     "date",
     "datetime",
     "desc",
     "case-insensitive"
-  ],
-  "dependencies": {
-    "tslib": "^2.8.1"
-  }
+  ]
 }
