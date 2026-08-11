@@ -304,6 +304,93 @@ describe('Natural Sort Tests', () => {
     ]);
   });
 
+  test('Zero and zero-padded whole values sort numerically', () => {
+    expect(['1', '0', '2'].sort(naturalSort())).toEqual(['0', '1', '2']);
+    expect([1, 0, 2].sort(naturalSort())).toEqual([0, 1, 2]);
+    expect(['007', '8', '9'].sort(naturalSort())).toEqual(['007', '8', '9']);
+    expect(['0.10', '0.9'].sort(naturalSort())).toEqual(['0.10', '0.9']);
+  });
+
+  test('IPv6 addresses', () => {
+    expect(
+      ['2001:0db8:0000:0000:0000:0000:0000:0002', '2001:0db8:0000:0000:0000:0000:0000:0001'].sort(naturalSort())
+    ).toEqual(['2001:0db8:0000:0000:0000:0000:0000:0001', '2001:0db8:0000:0000:0000:0000:0000:0002']);
+  });
+
+  test('Mixed IPv4 and IPv6 compares without NaN', () => {
+    const compare = naturalSort();
+    expect(Number.isNaN(compare('192.168.0.1', '2001:0db8:0000:0000:0000:0000:0000:0001'))).toBe(false);
+    expect(['2001:0db8:0000:0000:0000:0000:0000:0001', '192.168.0.1'].sort(compare)).toEqual([
+      '192.168.0.1',
+      '2001:0db8:0000:0000:0000:0000:0000:0001',
+    ]);
+  });
+
+  test('Invalid octets are not treated as an IP address', () => {
+    expect(['999.999.999.999', '1.1.1.1'].sort(naturalSort())).toEqual(['1.1.1.1', '999.999.999.999']);
+  });
+
+  test('Hex values beyond Number.MAX_SAFE_INTEGER stay distinct', () => {
+    expect(['0xFFFFFFFFFFFFFFFF', '0xFFFFFFFFFFFFFFFE', '0x1'].sort(naturalSort())).toEqual([
+      '0x1',
+      '0xFFFFFFFFFFFFFFFE',
+      '0xFFFFFFFFFFFFFFFF',
+    ]);
+    expect(naturalSort()('0x000f', '0xF')).toBe(0);
+  });
+
+  test('Date objects', () => {
+    const dates = [new Date('2021-06-05'), new Date('2020-01-01'), new Date('2022-03-03')];
+    expect(dates.sort(naturalSort()).map((date) => date.toISOString())).toEqual([
+      '2020-01-01T00:00:00.000Z',
+      '2021-06-05T00:00:00.000Z',
+      '2022-03-03T00:00:00.000Z',
+    ]);
+  });
+
+  test('Invalid Date does not throw or produce NaN', () => {
+    const compare = naturalSort();
+    expect(Number.isNaN(compare(new Date('nope'), new Date('2020-01-01')))).toBe(false);
+  });
+
+  test('Objects that only claim the Date tag do not throw', () => {
+    const compare = naturalSort();
+    const fake = { [Symbol.toStringTag]: 'Date' } as unknown as Date;
+    expect(Object.prototype.toString.call(fake)).toBe('[object Date]');
+    expect(() => compare(fake, new Date('2020-01-01'))).not.toThrow();
+  });
+
+  test('Values whose toString throws do not abort the sort', () => {
+    const compare = naturalSort();
+    // String() throws on both of these: no [[DateValue]] slot, and no prototype at all
+    expect(() => compare(Object.create(Date.prototype) as Date, new Date('2020-01-01'))).not.toThrow();
+    expect(() => compare(Object.create(null) as unknown as string, 'a')).not.toThrow();
+    expect(['b', Object.create(null) as unknown as string, 'a'].sort(compare)).toHaveLength(3);
+  });
+
+  test('Null and undefined entries with a key do not throw', () => {
+    expect([null, { id: 2 }, { id: 1 }].sort(naturalSort({ key: 'id' }))).toEqual([{ id: 1 }, { id: 2 }, null]);
+    expect([undefined, { id: 1 }].sort(naturalSort({ key: 'id' }))).toEqual([{ id: 1 }, undefined]);
+  });
+
+  test('Date detection stays linear on long inputs', () => {
+    const compare = naturalSort();
+    const value = `1${' '.repeat(20000)}1:`;
+    const start = Date.now();
+    compare(value, `${value}b`);
+    expect(Date.now() - start).toBeLessThan(1000);
+  });
+
+  test('Comparisons never return NaN', () => {
+    const compare = naturalSort();
+    const values = ['0', '1', '007', 'a', 'B', '10.5', '0x1f', '192.168.0.1', '::1', '2001:db8::1', '', '2020-01-01'];
+    for (const a of values) {
+      for (const b of values) {
+        expect(Number.isNaN(compare(a, b))).toBe(false);
+      }
+    }
+  });
+
   test('Sorting objects with function key selector', () => {
     expect(
       [
