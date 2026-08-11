@@ -120,7 +120,7 @@
     "jest": "^30.4.2",
     "jest-junit": "^17.0.0",
     "prettier": "3.9.5",
-    "rollup": "^4.62.2",
+    "rollup": "^4.62.3",
     "ts-jest": "^29.4.11",
     "cross-env": "^10.1.0",
     "bundlewatch": "^0.4.2",
