@@ -122,7 +122,7 @@
     "jest": "^30.4.2",
     "jest-junit": "^17.0.0",
     "prettier": "3.9.6",
-    "rollup": "^4.62.4",
+    "rollup": "^4.63.1",
     "rollup-plugin-dts": "^6.5.1",
     "ts-jest": "^29.4.12",
     "ts-node": "^10.9.2",
